@@ -16,7 +16,7 @@ export const TodoList: React.FC<TodoListPropsType> = (props) => {
     const [taskTitle, setTaskTitle] = useState<string>("")
     const [error, setError] = useState<string | null>(null)
 
-    let {
+    const {
         todoTitle, tasks,
         removeTask, filterTasks,
         addTask, changeTaskStatus,
@@ -36,7 +36,7 @@ export const TodoList: React.FC<TodoListPropsType> = (props) => {
 
     const addTaskHandler = () => {
         if (taskTitle.trim() !== "") {
-            addTask(taskTitle)
+            addTask(taskTitle.trim())
             setTaskTitle("")
         } else {
             setError("title is require")
