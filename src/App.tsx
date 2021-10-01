@@ -8,7 +8,7 @@ export type TaskType = {
     title: string
     isDone: boolean
 }
-export type FilterValueType = "all" | "active" | "completed"
+export type FilterValueType = "all" | "active" | "complete"
 
 export const App: React.FC = () => {
 
@@ -27,8 +27,17 @@ export const App: React.FC = () => {
         setFilter(value)
     }
 
+    const addTask = (taskTitle: string) => {
+        const task: TaskType = {
+            id: v1(),
+            title: taskTitle,
+            isDone: false
+        }
+        setTasks([task, ...tasks])
+    }
+
     let filteredTasks = tasks
-    if (filter === "completed") {
+    if (filter === "complete") {
         filteredTasks = tasks.filter(t => t.isDone)
     }
     if (filter === "active") {
@@ -37,10 +46,11 @@ export const App: React.FC = () => {
     return (
         <div className="App">
             <TodoList
-                title={"What to learn"}
+                todoTitle={"What to learn"}
                 tasks={filteredTasks}
                 removeTask={removeTask}
                 filterTasks={filterTask}
+                addTask={addTask}
             />
         </div>
     )
