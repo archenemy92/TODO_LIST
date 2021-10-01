@@ -27,13 +27,25 @@ export const App: React.FC = () => {
         setFilter(value)
     }
 
-    const addTask = (taskTitle: string) => {
+    const addTask = (title: string) => {
         const task: TaskType = {
             id: v1(),
-            title: taskTitle,
+            title,
             isDone: false
         }
         setTasks([task, ...tasks])
+    }
+
+    const changeTaskStatus = (id: string, isDone: boolean) => {
+        setTasks(state => state.map(t => {
+            if (t.id === id) {
+                return {
+                    ...t,
+                    isDone
+                }
+            }
+            return t
+        }))
     }
 
     let filteredTasks = tasks
@@ -47,10 +59,12 @@ export const App: React.FC = () => {
         <div className="App">
             <TodoList
                 todoTitle={"What to learn"}
+                filter={filter}
                 tasks={filteredTasks}
                 removeTask={removeTask}
                 filterTasks={filterTask}
                 addTask={addTask}
+                changeTaskStatus={changeTaskStatus}
             />
         </div>
     )
