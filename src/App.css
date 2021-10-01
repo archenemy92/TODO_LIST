@@ -18,3 +18,6 @@
 .active_filter {
     background-color: aquamarine;
 }
+.isDone {
+    opacity: 0.5;
+}
