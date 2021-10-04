@@ -2,6 +2,7 @@ import React, {useState} from "react"
 import {v1} from "uuid"
 import "./App.css"
 import {TodoList} from "./Components/TodoList/TodoList"
+import {AddItemForm} from "./Components/AddItemForm/AddItemForm"
 
 export type TaskType = {
     id: string
@@ -23,7 +24,7 @@ export const App: React.FC = () => {
     let todoID1 = v1()
     let todoID2 = v1()
 
-    let [todoList, setTodoList] = useState<TodoListType[]>([
+    let [todoLists, setTodoLists] = useState<TodoListType[]>([
         {id: todoID1, title: "What to learn", filter: "all"},
         {id: todoID2, title: "What to buy", filter: "all"},
     ])
@@ -41,23 +42,6 @@ export const App: React.FC = () => {
         ]
     })
 
-
-    const removeTask = (taskId: string, todoID: string) => {
-        setTasks(tasks => {
-            return {
-                ...tasks,
-                [todoID]: tasks[todoID].filter(t => t.id !== taskId)
-            }
-        })
-    }
-    const filterTask = (value: FilterValueType, todoID: string) => {
-        let tl = todoList.find(tl => tl.id === todoID)
-        if (tl) {
-            tl.filter = value
-            setTodoList([...todoList])
-        }
-    }
-
     const addTask = (title: string, todoID: string) => {
         const task: TaskType = {
             id: v1(),
@@ -71,7 +55,21 @@ export const App: React.FC = () => {
             }
         })
     }
-
+    const removeTask = (taskId: string, todoID: string) => {
+        setTasks(tasks => {
+            return {
+                ...tasks,
+                [todoID]: tasks[todoID].filter(t => t.id !== taskId)
+            }
+        })
+    }
+    const filterTask = (value: FilterValueType, todoID: string) => {
+        let tl = todoLists.find(tl => tl.id === todoID)
+        if (tl) {
+            tl.filter = value
+            setTodoLists([...todoLists])
+        }
+    }
     const changeTaskStatus = (taskId: string, isDone: boolean, todoID: string) => {
         let task = tasks[todoID].find(t => t.id === taskId)
         if (task) {
@@ -79,16 +77,46 @@ export const App: React.FC = () => {
             setTasks({...tasks})
         }
     }
+    const changeTaskTitle = (taskId: string, title: string, todoID: string) => {
+        let task = tasks[todoID].find(t => t.id === taskId)
+        if (task) {
+            task.title = title
+            setTasks({...tasks})
+        }
+    }
+
+    const addTodoList = (title: string) => {
+        const todoList: TodoListType = {
+            id: v1(),
+            title,
+            filter: "all"
+        }
+        setTodoLists([todoList, ...todoLists])
+        setTasks({...tasks, [todoList.id]: []})
+    }
 
     const removeTodoList = (todoID: string) => {
-        setTodoList(todoLists => todoLists.filter(tl => tl.id !== todoID))
+        setTodoLists(todoLists => todoLists.filter(tl => tl.id !== todoID))
         delete tasks[todoID]
+    }
+
+    const changeTodoTitle = (todoID: string, title: string) => {
+        setTodoLists(todoLists => todoLists.map(tl => {
+            if (tl.id === todoID) {
+                return {
+                    ...tl,
+                    title
+                }
+            }
+            return tl
+        }))
     }
 
     return (
         <div className="App">
+            <AddItemForm addItem={addTodoList}/>
             {
-                todoList.map(tl => {
+                todoLists.map(tl => {
 
                     let filteredTasks = tasks[tl.id]
                     if (tl.filter === "complete") {
@@ -99,6 +127,7 @@ export const App: React.FC = () => {
                     }
 
                     return <TodoList
+                        key={tl.id}
                         tl={tl}
                         tasks={filteredTasks}
                         removeTask={removeTask}
@@ -106,11 +135,12 @@ export const App: React.FC = () => {
                         addTask={addTask}
                         changeTaskStatus={changeTaskStatus}
                         removeTodoList={removeTodoList}
+                        changeTaskTitle={changeTaskTitle}
+                        changeTodoTitle={changeTodoTitle}
                     />
 
                 })
             }
-
         </div>
     )
 }
