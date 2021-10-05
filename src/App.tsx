@@ -3,6 +3,8 @@ import {v1} from "uuid"
 import "./App.css"
 import {TodoList} from "./Components/TodoList/TodoList"
 import {AddItemForm} from "./Components/AddItemForm/AddItemForm"
+import {Header} from "./Components/Header/Header"
+import {Card, Container, Paper} from "@mui/material"
 
 export type TaskType = {
     id: string
@@ -113,35 +115,48 @@ export const App: React.FC = () => {
     }
 
     return (
-        <div className="App">
-            <AddItemForm addItem={addTodoList}/>
-            {
-                todoLists.map(tl => {
 
-                    let filteredTasks = tasks[tl.id]
-                    if (tl.filter === "complete") {
-                        filteredTasks = filteredTasks.filter(t => t.isDone)
-                    }
-                    if (tl.filter === "active") {
-                        filteredTasks = filteredTasks.filter(t => !t.isDone)
-                    }
 
-                    return <TodoList
-                        key={tl.id}
-                        tl={tl}
-                        tasks={filteredTasks}
-                        removeTask={removeTask}
-                        filterTasks={filterTask}
-                        addTask={addTask}
-                        changeTaskStatus={changeTaskStatus}
-                        removeTodoList={removeTodoList}
-                        changeTaskTitle={changeTaskTitle}
-                        changeTodoTitle={changeTodoTitle}
-                    />
+        <Container>
+            <Header addItem={addTodoList}/>
+            {/*<div>create new todo</div>*/}
+            {/*  <AddItemForm addItem={addTodoList}/>*/}
+            <div className={"App"}>
 
-                })
-            }
-        </div>
+                {
+                    todoLists.map(tl => {
+
+                        let filteredTasks = tasks[tl.id]
+                        if (tl.filter === "complete") {
+                            filteredTasks = filteredTasks.filter(t => t.isDone)
+                        }
+                        if (tl.filter === "active") {
+                            filteredTasks = filteredTasks.filter(t => !t.isDone)
+                        }
+
+                        return <Paper style={{margin:"10px"}} elevation={5}>
+                            <TodoList
+                                key={tl.id}
+                                tl={tl}
+                                tasks={filteredTasks}
+                                removeTask={removeTask}
+                                filterTasks={filterTask}
+                                addTask={addTask}
+                                changeTaskTitle={changeTaskTitle}
+                                changeTaskStatus={changeTaskStatus}
+                                removeTodoList={removeTodoList}
+                                changeTodoTitle={changeTodoTitle}
+                            />
+                        </Paper>
+
+
+                    })
+                }
+            </div>
+
+        </Container>
+
+
     )
 }
 

@@ -1,6 +1,9 @@
 .App {
-    padding: 30px;
+    padding: 0 30px;
     display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: start;
 }
 
 .App > div {
