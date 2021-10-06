@@ -2,9 +2,8 @@ import React, {useState} from "react"
 import {v1} from "uuid"
 import "./App.css"
 import {TodoList} from "./Components/TodoList/TodoList"
-import {AddItemForm} from "./Components/AddItemForm/AddItemForm"
 import {Header} from "./Components/Header/Header"
-import {Card, Container, Paper} from "@mui/material"
+import {Container, Paper} from "@mui/material"
 
 export type TaskType = {
     id: string
@@ -119,8 +118,6 @@ export const App: React.FC = () => {
 
         <Container>
             <Header addItem={addTodoList}/>
-            {/*<div>create new todo</div>*/}
-            {/*  <AddItemForm addItem={addTodoList}/>*/}
             <div className={"App"}>
 
                 {
