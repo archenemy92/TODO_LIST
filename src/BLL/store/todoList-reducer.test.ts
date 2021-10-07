@@ -8,14 +8,16 @@ import {
     todoListReducer
 } from "./todoList-reducer"
 
-test("Correct todoList should be removed", () => {
-    let todoListId1 = v1()
-    let todoListId2 = v1()
+let todoListId1 = v1()
+let todoListId2 = v1()
 
-    const startState: TodoListType[] = [
-        {id: todoListId1, title: "What to learn", filter: "all"},
-        {id: todoListId2, title: "What to buy", filter: "all"}
-    ]
+const startState: TodoListType[] = [
+    {id: todoListId1, title: "What to learn", filter: "all"},
+    {id: todoListId2, title: "What to buy", filter: "all"}
+]
+
+test("Correct todoList should be removed", () => {
+
 
     const endState = todoListReducer(startState, removeTodoList(todoListId1))
 
@@ -23,15 +25,8 @@ test("Correct todoList should be removed", () => {
     expect(endState[0].id).toBe(todoListId2)
 })
 test("Correct todoList should be added", () => {
-    let todoListId1 = v1()
-    let todoListId2 = v1()
 
     let title = "New todo"
-
-    const startState: TodoListType[] = [
-        {id: todoListId1, title: "What to learn", filter: "all"},
-        {id: todoListId2, title: "What to buy", filter: "all"}
-    ]
 
     const endState = todoListReducer(startState, addTodoList(title))
 
@@ -41,15 +36,8 @@ test("Correct todoList should be added", () => {
 })
 
 test("Correct todoList title should be changed ", () => {
-    let todoListId1 = v1()
-    let todoListId2 = v1()
 
     let title = "New todo"
-
-    const startState: TodoListType[] = [
-        {id: todoListId1, title: "What to learn", filter: "all"},
-        {id: todoListId2, title: "What to buy", filter: "all"}
-    ]
 
     const endState = todoListReducer(startState,
         changeTodoListTitle(title, todoListId1))
@@ -60,19 +48,10 @@ test("Correct todoList title should be changed ", () => {
 })
 
 test("Correct todoList filter should be changed ", () => {
-    let todoListId1 = v1()
-    let todoListId2 = v1()
 
     let filter: FilterValueType = "complete"
-
-    const startState: TodoListType[] = [
-        {id: todoListId1, title: "What to learn", filter: "all"},
-        {id: todoListId2, title: "What to buy", filter: "all"}
-    ]
-
     const endState = todoListReducer(startState,
         changeTodoListFilter(filter, todoListId2))
-
 
     expect(endState[0].filter).toBe("all")
     expect(endState[1].filter).toBe(filter)
